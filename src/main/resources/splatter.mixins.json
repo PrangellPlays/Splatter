@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "dev.prangellplays.splatter.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "server.stepheight.EntityAttributesMixin",
+    "server.stepheight.EntityMixin",
+    "server.stepheight.LivingEntityMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+	}
+}

@@ -1,0 +1,57 @@
+{
+  "__Comment": "Items",
+
+
+  "__Comment": "Blocks",
+  "block.splatter.black_ink": "Black Ink",
+  "block.splatter.blue_ink": "Blue Ink",
+  "block.splatter.brown_ink": "Brown Ink",
+  "block.splatter.cyan_ink": "Cyan Ink",
+  "block.splatter.gray_ink": "Grey Ink",
+  "block.splatter.green_ink": "Green Ink",
+  "block.splatter.light_blue_ink": "Light Blue Ink",
+  "block.splatter.light_gray_ink": "Light Grey Ink",
+  "block.splatter.lime_ink": "Lime Ink",
+  "block.splatter.magenta_ink": "Magenta Ink",
+  "block.splatter.orange_ink": "Orange Ink",
+  "block.splatter.pink_ink": "Pink Ink",
+  "block.splatter.purple_ink": "Purple Ink",
+  "block.splatter.red_ink": "Red Ink",
+  "block.splatter.white_ink": "White Ink",
+  "block.splatter.yellow_ink": "Yellow Ink",
+
+
+  "__Comment": "Item Group",
+  "itemgroup.splatter.splatter_items": "Splatter",
+
+  "__Comment": "Subtitle",
+
+
+  "_Comment": "Effects",
+  "effect.splatter.blue_inkskin": "Inkskin (Blue)",
+  "effect.splatter.cyan_inkskin": "Inkskin (Cyan)",
+  "effect.splatter.green_inkskin": "Inkskin (Green)",
+  "effect.splatter.lime_inkskin": "Inkskin (Lime)",
+  "effect.splatter.orange_inkskin": "Inkskin (Orange)",
+  "effect.splatter.pink_inkskin": "Inkskin (Pink)",
+  "effect.splatter.purple_inkskin": "Inkskin (Purple)",
+  "effect.splatter.yellow_inkskin": "Inkskin (Yellow)",
+  "effect.splatter.black_inkskin": "Inkskin (Black)",
+  "effect.splatter.brown_inkskin": "Inkskin (Brown)",
+  "effect.splatter.gray_inkskin": "Inkskin (Grey)",
+  "effect.splatter.light_blue_inkskin": "Inkskin (Light Blue)",
+  "effect.splatter.light_gray_inkskin": "Inkskin (Light Grey)",
+  "effect.splatter.magneta_inkskin": "Inkskin (Magenta)",
+  "effect.splatter.red_inkskin": "Inkskin (Red)",
+  "effect.splatter.white_inkskin": "Inkskin (White)",
+
+  "__Comment": "Config",
+  "splatter.midnightconfig.title": "Splatter",
+  "splatter.midnightconfig.category.client": "Client",
+  "splatter.midnightconfig.category.common": "Common",
+  "splatter.midnightconfig.inkParticles": "Ink Particles",
+  "splatter.midnightconfig.inkSplatterSize": "Ink Splatter Size",
+
+  "__Comment": "Entity Attributes",
+  "generic.splatter.step-height": "Step Height"
+}

@@ -1,0 +1,66 @@
+{
+	"schemaVersion": 1,
+	"id": "splatter",
+	"version": "${version}",
+	"name": "Splatter",
+	"description": "Splatoon in Minecraft",
+	"authors": [
+		"PrangellPlays"
+	],
+	"contributors": [
+		"Nintendo"
+	],
+	"license": "All Rights Reserved",
+	"icon": "assets/splatter/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"dev.prangellplays.splatter.Splatter"
+		],
+		"fabric-datagen": [
+			"dev.prangellplays.splatter.SplatterDataGenerator"
+		],
+		"client": [
+			"dev.prangellplays.splatter.SplatterClient"
+		],
+		"cardinal-components": [
+			"dev.prangellplays.splatter.init.SplatterComponents"
+		],
+		"modmenu": [
+			"dev.prangellplays.splatter.compat.ModMenuCompat"
+		]
+	},
+	"mixins": [
+		"splatter.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.9",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*",
+		"midnightlib": "*"
+	},
+	"custom": {
+		"cardinal-components":[
+			"splatter:blue_inkling",
+			"splatter:cyan_inkling",
+			"splatter:green_inkling",
+			"splatter:lime_inkling",
+			"splatter:orange_inkling",
+			"splatter:pink_inkling",
+			"splatter:purple_inkling",
+			"splatter:yellow_inkling",
+			"splatter:black_octoling",
+			"splatter:brown_octoling",
+			"splatter:gray_octoling",
+			"splatter:light_blue_octoling",
+			"splatter:light_gray_octoling",
+			"splatter:magenta_octoling",
+			"splatter:red_octoling",
+			"splatter:white_octoling"
+		]
+	},
+	"suggests": {
+		"modmenu": "*"
+	}
+}
