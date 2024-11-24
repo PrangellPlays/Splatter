@@ -3,6 +3,7 @@ package dev.prangellplays.splatter.components.octoling;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import dev.prangellplays.splatter.Splatter;
+import dev.prangellplays.splatter.SplatterConfig;
 import dev.prangellplays.splatter.components.inkling.PlayerBlueInklingComponent;
 import dev.prangellplays.splatter.init.SplatterComponents;
 import dev.prangellplays.splatter.init.SplatterParticles;
@@ -210,15 +211,16 @@ public class PlayerLightGrayOctolingComponent implements AutoSyncedComponent, Co
         if (this.isOctoling()) {
             boolean collidingWithFuneralInk = Splatter.isCollidingWithLightGrayInk(this.player);
             boolean collidingWithFuneralStrict = Splatter.isCollidingWithLightGrayInkStrict(this.player);
-            if (this.isDiving()) {
-                if (!collidingWithFuneralInk && this.player.isOnGround()) {
-                    this.player.getWorld().addParticle(SplatterParticles.LIGHT_GRAY_INK_SPLAT, this.player.getParticleX(0.3), this.player.getY() + 0.009999999776482582, this.player.getParticleZ(0.3), (double)((this.player.getWorld().random.nextFloat() - 0.5F) * 0.3F), (double)(this.player.getWorld().random.nextFloat() * 0.3F), (double)((this.player.getWorld().random.nextFloat() - 0.5F) * 0.3F));
+            if (SplatterConfig.inkParticles) {
+                if (this.isDiving()) {
+                    if (!collidingWithFuneralInk && this.player.isOnGround()) {
+                        this.player.getWorld().addParticle(SplatterParticles.LIGHT_GRAY_INK_SPLAT, (double) ((float) this.player.getX()), (double) ((float) this.player.getY() + 0.01F), (double) ((float) this.player.getZ()), 0.0, 0.0, 0.0);
+                    }
+                } else if (!collidingWithFuneralStrict && !this.player.isTouchingWater() && this.player.isOnGround()) {
+                    this.player.getWorld().addParticle(SplatterParticles.LIGHT_GRAY_FALLING_INK, this.player.getParticleX(0.3), this.player.getY() + 0.009999999776482582, this.player.getParticleZ(0.3), 0.0, 0.0, 0.0);
                 }
-            } else if (!collidingWithFuneralStrict && !this.player.isTouchingWater() && this.player.isOnGround()) {
-                this.player.getWorld().addParticle(SplatterParticles.LIGHT_GRAY_FALLING_INK, this.player.getParticleX(0.3), this.player.getY() + 0.009999999776482582, this.player.getParticleZ(0.3), 0.0, 0.0, 0.0);
             }
         }
-
     }
 
     public void serverTick() {

@@ -28,7 +28,7 @@ public class BlackFallingInkParticle extends SpriteBillboardParticle {
         super.tick();
         if (!this.dead && (this.onGround || this.isInFluid())) {
             this.markDead();
-            this.world.addParticle(SplatterParticles.BLACK_INK_SPLAT, this.x, this.y + (double)(this.random.nextFloat() * 0.005F), this.z, 0.0, 0.0, 0.0);
+            this.world.addParticle(SplatterParticles.BLACK_INK_SPLAT, (double)((float)this.x), (double)((float)this.y + 0.01F), (double)((float)this.z), 0.0, 0.0, 0.0);
         }
     }
 

@@ -1,0 +1,39 @@
+{
+	"credit": "Made with Blockbench",
+	"ambientocclusion": false,
+	"textures": {
+		"0": "splatter:block/ink/yellow/yellow_ink_side",
+		"1": "splatter:block/ink/yellow/yellow_ink_dripping",
+		"particle": "splatter:block/ink/yellow/yellow_ink",
+		"ink": "splatter:block/ink/yellow/yellow_ink"
+	},
+	"elements": [
+		{
+			"from": [-0.1, -0.1, -5.1],
+			"to": [16.1, 16.1, 0.1],
+			"faces": {
+				"east": {"uv": [0, 0, 16, 5], "rotation": 270, "texture": "#0"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#ink"},
+				"west": {"uv": [0, 0, 16, 5], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [0, 0, 16, 5], "rotation": 180, "texture": "#0"},
+				"down": {"uv": [0, 0, 16, 5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [-0.1, -0.1, 0.1],
+			"to": [16.1, 16.1, 0.1],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#ink"}
+			}
+		},
+		{
+			"from": [-0.1, -7.1, -0.15],
+			"to": [16.1, 0.1, 0.05],
+			"rotation": {"angle": 0, "axis": "x", "origin": [0, -4, 0]},
+			"faces": {
+				"north": {"uv": [16, 0, 0, 7], "texture": "#1"},
+				"south": {"uv": [0, 0, 16, 7], "texture": "#1"}
+			}
+		}
+	]
+}
