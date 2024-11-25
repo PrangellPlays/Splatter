@@ -1,10 +1,13 @@
 package dev.prangellplays.splatter;
 
 import dev.prangellplays.splatter.block.ink.*;
+import dev.prangellplays.splatter.components.inkling.*;
+import dev.prangellplays.splatter.components.octoling.*;
 import dev.prangellplays.splatter.init.*;
 import eu.midnightdust.lib.config.MidnightConfig;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Identifier;
@@ -17,6 +20,8 @@ import org.slf4j.LoggerFactory;
 public class Splatter implements ModInitializer {
 	public static final String MOD_ID = "splatter";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+	public static final Identifier SERVERBOUND_DIVE_PACKET = id("inkskin_dive");
+	public static final Identifier SERVERBOUND_LAUNCH_PACKET = id("inkskin_launch");
 
 	public static boolean isCollidingWithBlueInkStrict(Entity entity) {
 		BlockState bs = entity.getBlockStateAtPos();
@@ -542,6 +547,222 @@ public class Splatter implements ModInitializer {
 		SplatterItemGroups.init();
 		SplatterStatusEffects.init();
 		SplatterParticles.init();
+
+		ServerPlayNetworking.registerGlobalReceiver(SERVERBOUND_DIVE_PACKET, (server, player, handler, buf, responseSender) -> {
+			server.execute(() -> {
+				PlayerBlackOctolingComponent blackComponent = (PlayerBlackOctolingComponent) SplatterComponents.BLACK_OCTOLING.get(player);
+				if (blackComponent.isOctoling()) {
+					blackComponent.switchDiveState();
+				}
+
+				PlayerBlueInklingComponent blueComponent = (PlayerBlueInklingComponent) SplatterComponents.BLUE_INKLING.get(player);
+				if (blueComponent.isInkling()) {
+					blueComponent.switchDiveState();
+				}
+
+				PlayerBrownOctolingComponent BrownComponent = (PlayerBrownOctolingComponent) SplatterComponents.BROWN_OCTOLING.get(player);
+				if (BrownComponent.isOctoling()) {
+					BrownComponent.switchDiveState();
+				}
+
+				PlayerCyanInklingComponent cyanComponent = (PlayerCyanInklingComponent) SplatterComponents.CYAN_INKLING.get(player);
+				if (cyanComponent.isInkling()) {
+					cyanComponent.switchDiveState();
+				}
+
+				PlayerGrayOctolingComponent grayComponent = (PlayerGrayOctolingComponent) SplatterComponents.GRAY_OCTOLING.get(player);
+				if (grayComponent.isOctoling()) {
+					grayComponent.switchDiveState();
+				}
+
+				PlayerGreenInklingComponent greenComponent = (PlayerGreenInklingComponent) SplatterComponents.GREEN_INKLING.get(player);
+				if (greenComponent.isInkling()) {
+					greenComponent.switchDiveState();
+				}
+
+				PlayerLightBlueOctolingComponent lightblueComponent = (PlayerLightBlueOctolingComponent) SplatterComponents.LIGHT_BLUE_OCTOLING.get(player);
+				if (lightblueComponent.isOctoling()) {
+					lightblueComponent.switchDiveState();
+				}
+
+				PlayerLightGrayOctolingComponent lightgrayComponent = (PlayerLightGrayOctolingComponent) SplatterComponents.LIGHT_GRAY_OCTOLING.get(player);
+				if (lightgrayComponent.isOctoling()) {
+					lightgrayComponent.switchDiveState();
+				}
+
+				PlayerLimeInklingComponent limeComponent = (PlayerLimeInklingComponent) SplatterComponents.LIME_INKLING.get(player);
+				if (limeComponent.isInkling()) {
+					limeComponent.switchDiveState();
+				}
+
+				PlayerMagentaOctolingComponent magentaComponent = (PlayerMagentaOctolingComponent) SplatterComponents.MAGENTA_OCTOLING.get(player);
+				if (magentaComponent.isOctoling()) {
+					magentaComponent.switchDiveState();
+				}
+
+				PlayerOrangeInklingComponent orangeComponent = (PlayerOrangeInklingComponent) SplatterComponents.ORANGE_INKLING.get(player);
+				if (orangeComponent.isInkling()) {
+					orangeComponent.switchDiveState();
+				}
+
+				PlayerPinkInklingComponent pinkComponent = (PlayerPinkInklingComponent) SplatterComponents.PINK_INKLING.get(player);
+				if (pinkComponent.isInkling()) {
+					pinkComponent.switchDiveState();
+				}
+
+				PlayerPurpleInklingComponent purpleComponent = (PlayerPurpleInklingComponent) SplatterComponents.PURPLE_INKLING.get(player);
+				if (purpleComponent.isInkling()) {
+					purpleComponent.switchDiveState();
+				}
+
+				PlayerRedOctolingComponent redComponent = (PlayerRedOctolingComponent) SplatterComponents.RED_OCTOLING.get(player);
+				if (redComponent.isOctoling()) {
+					redComponent.switchDiveState();
+				}
+
+				PlayerWhiteOctolingComponent whiteComponent = (PlayerWhiteOctolingComponent) SplatterComponents.WHITE_OCTOLING.get(player);
+				if (whiteComponent.isOctoling()) {
+					whiteComponent.switchDiveState();
+				}
+
+				PlayerYellowInklingComponent yellowComponent = (PlayerYellowInklingComponent) SplatterComponents.YELLOW_INKLING.get(player);
+				if (yellowComponent.isInkling()) {
+					yellowComponent.switchDiveState();
+				}
+			});
+		});
+		ServerPlayNetworking.registerGlobalReceiver(SERVERBOUND_LAUNCH_PACKET, (server, player, handler, buf, responseSender) -> {
+			float yvel = buf.readFloat();
+			server.execute(() -> {
+				PlayerBlackOctolingComponent blackComponent = (PlayerBlackOctolingComponent) SplatterComponents.BLACK_OCTOLING.get(player);
+				if (blackComponent.isOctoling()) {
+					blackComponent.launch();
+					player.setVelocity(0.0, (double)yvel, 0.0);
+					player.velocityDirty = true;
+					player.velocityModified = true;
+				}
+
+				PlayerBlueInklingComponent blueComponent = (PlayerBlueInklingComponent) SplatterComponents.BLUE_INKLING.get(player);
+				if (blueComponent.isInkling()) {
+					blueComponent.launch();
+					player.setVelocity(0.0, (double)yvel, 0.0);
+					player.velocityDirty = true;
+					player.velocityModified = true;
+				}
+
+				PlayerBrownOctolingComponent BrownComponent = (PlayerBrownOctolingComponent) SplatterComponents.BROWN_OCTOLING.get(player);
+				if (BrownComponent.isOctoling()) {
+					BrownComponent.launch();
+					player.setVelocity(0.0, (double)yvel, 0.0);
+					player.velocityDirty = true;
+					player.velocityModified = true;
+				}
+
+				PlayerCyanInklingComponent cyanComponent = (PlayerCyanInklingComponent) SplatterComponents.CYAN_INKLING.get(player);
+				if (cyanComponent.isInkling()) {
+					cyanComponent.launch();
+					player.setVelocity(0.0, (double)yvel, 0.0);
+					player.velocityDirty = true;
+					player.velocityModified = true;
+				}
+
+				PlayerGrayOctolingComponent grayComponent = (PlayerGrayOctolingComponent) SplatterComponents.GRAY_OCTOLING.get(player);
+				if (grayComponent.isOctoling()) {
+					grayComponent.launch();
+					player.setVelocity(0.0, (double)yvel, 0.0);
+					player.velocityDirty = true;
+					player.velocityModified = true;
+				}
+
+				PlayerGreenInklingComponent greenComponent = (PlayerGreenInklingComponent) SplatterComponents.GREEN_INKLING.get(player);
+				if (greenComponent.isInkling()) {
+					greenComponent.launch();
+					player.setVelocity(0.0, (double)yvel, 0.0);
+					player.velocityDirty = true;
+					player.velocityModified = true;
+				}
+
+				PlayerLightBlueOctolingComponent lightblueComponent = (PlayerLightBlueOctolingComponent) SplatterComponents.LIGHT_BLUE_OCTOLING.get(player);
+				if (lightblueComponent.isOctoling()) {
+					lightblueComponent.launch();
+					player.setVelocity(0.0, (double)yvel, 0.0);
+					player.velocityDirty = true;
+					player.velocityModified = true;
+				}
+
+				PlayerLightGrayOctolingComponent lightgrayComponent = (PlayerLightGrayOctolingComponent) SplatterComponents.LIGHT_GRAY_OCTOLING.get(player);
+				if (lightgrayComponent.isOctoling()) {
+					lightgrayComponent.launch();
+					player.setVelocity(0.0, (double)yvel, 0.0);
+					player.velocityDirty = true;
+					player.velocityModified = true;
+				}
+
+				PlayerLimeInklingComponent limeComponent = (PlayerLimeInklingComponent) SplatterComponents.LIME_INKLING.get(player);
+				if (limeComponent.isInkling()) {
+					limeComponent.launch();
+					player.setVelocity(0.0, (double)yvel, 0.0);
+					player.velocityDirty = true;
+					player.velocityModified = true;
+				}
+
+				PlayerMagentaOctolingComponent magentaComponent = (PlayerMagentaOctolingComponent) SplatterComponents.MAGENTA_OCTOLING.get(player);
+				if (magentaComponent.isOctoling()) {
+					magentaComponent.launch();
+					player.setVelocity(0.0, (double)yvel, 0.0);
+					player.velocityDirty = true;
+					player.velocityModified = true;
+				}
+
+				PlayerOrangeInklingComponent orangeComponent = (PlayerOrangeInklingComponent) SplatterComponents.ORANGE_INKLING.get(player);
+				if (orangeComponent.isInkling()) {
+					orangeComponent.launch();
+					player.setVelocity(0.0, (double)yvel, 0.0);
+					player.velocityDirty = true;
+					player.velocityModified = true;
+				}
+
+				PlayerPinkInklingComponent pinkComponent = (PlayerPinkInklingComponent) SplatterComponents.PINK_INKLING.get(player);
+				if (pinkComponent.isInkling()) {
+					pinkComponent.launch();
+					player.setVelocity(0.0, (double)yvel, 0.0);
+					player.velocityDirty = true;
+					player.velocityModified = true;
+				}
+
+				PlayerPurpleInklingComponent purpleComponent = (PlayerPurpleInklingComponent) SplatterComponents.PURPLE_INKLING.get(player);
+				if (purpleComponent.isInkling()) {
+					purpleComponent.launch();
+					player.setVelocity(0.0, (double)yvel, 0.0);
+					player.velocityDirty = true;
+					player.velocityModified = true;
+				}
+
+				PlayerRedOctolingComponent redComponent = (PlayerRedOctolingComponent) SplatterComponents.RED_OCTOLING.get(player);
+				if (redComponent.isOctoling()) {
+					redComponent.launch();
+					player.setVelocity(0.0, (double)yvel, 0.0);
+					player.velocityDirty = true;
+					player.velocityModified = true;
+				}
+
+				PlayerWhiteOctolingComponent whiteComponent = (PlayerWhiteOctolingComponent) SplatterComponents.WHITE_OCTOLING.get(player);
+				if (whiteComponent.isOctoling()) {
+					whiteComponent.launch();
+					player.setVelocity(0.0, (double)yvel, 0.0);
+					player.velocityDirty = true;
+					player.velocityModified = true;
+				}
+
+				PlayerYellowInklingComponent yellowComponent = (PlayerYellowInklingComponent) SplatterComponents.YELLOW_INKLING.get(player);
+				if (yellowComponent.isInkling()) {
+					yellowComponent.launch();
+					player.setVelocity(0.0, (double)yvel, 0.0);
+					player.velocityDirty = true;
+					player.velocityModified = true;
+				}
+			});
+		});
 	}
 
 	public static Identifier id(String name) {

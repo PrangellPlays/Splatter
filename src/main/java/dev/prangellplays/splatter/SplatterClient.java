@@ -3,12 +3,15 @@ package dev.prangellplays.splatter;
 import dev.prangellplays.splatter.init.SplatterBlocks;
 import dev.prangellplays.splatter.init.SplatterParticles;
 import dev.prangellplays.splatter.particle.ink.*;
+import ladysnake.satin.api.managed.ShaderEffectManager;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.minecraft.client.render.RenderLayer;
 
 public class SplatterClient implements ClientModInitializer {
+    public static final float MAX_LAUNCH_STRENGTH = 2.0F;
+    public static float launchStrength;
 
     @Override
     public void onInitializeClient() {
@@ -76,5 +79,9 @@ public class SplatterClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(SplatterBlocks.RED_INK, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(SplatterBlocks.WHITE_INK, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(SplatterBlocks.YELLOW_INK, RenderLayer.getCutout());
+    }
+
+    static {
+        launchStrength = 0.0F;
     }
 }

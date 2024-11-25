@@ -8,6 +8,7 @@
     "server.stepheight.LivingEntityMixin"
   ],
   "client": [
+    "client.inkskin.KeyRebindDiveClientPlayerEntityMxin"
   ],
   "injectors": {
     "defaultRequire": 1
