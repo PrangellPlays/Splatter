@@ -8,7 +8,7 @@ import dev.prangellplays.splatter.init.SplatterComponents;
 import dev.prangellplays.splatter.init.SplatterParticles;
 import dev.prangellplays.splatter.init.SplatterStatusEffects;
 import dev.prangellplays.splatter.packet.EntityAndPosPacket;
-import dev.prangellplays.splatter.stepheight.StepHeightEntityAttribute;
+import dev.prangellplays.splatter.attribute.StepHeightEntityAttribute;
 import dev.prangellplays.splatter.world.PinkInksplosion;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;

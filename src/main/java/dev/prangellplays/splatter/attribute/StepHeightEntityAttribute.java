@@ -1,4 +1,4 @@
-package dev.prangellplays.splatter.stepheight;
+package dev.prangellplays.splatter.attribute;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;

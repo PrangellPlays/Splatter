@@ -1,6 +1,6 @@
 package dev.prangellplays.splatter.mixin.server.stepheight;
 
-import dev.prangellplays.splatter.stepheight.StepHeightEntityAttribute;
+import dev.prangellplays.splatter.attribute.StepHeightEntityAttribute;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;

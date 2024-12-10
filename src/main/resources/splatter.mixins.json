@@ -8,7 +8,18 @@
     "server.stepheight.LivingEntityMixin"
   ],
   "client": [
-    "client.inkskin.KeyRebindDiveClientPlayerEntityMxin"
+    "client.inkskin.BipedEntityModelAccessor",
+    "client.inkskin.DisableCapeFeatureRendererMixin",
+    "client.inkskin.DivingInkskinDisableBlockOutlineWorldRendererMixin",
+    "client.inkskin.InkskinDisableHungerBarInGameHudMixin",
+    "client.inkskin.InkskinDisableInteractionMinecraftClientMixin",
+    "client.inkskin.InkskinForceThirdPersonGameOptionsMixin",
+    "client.inkskin.InkskinOverrideModelLivingEntityRendererMixin",
+    "client.inkskin.NoArmorOnInkskinArmorFeatureRendererMixin",
+    "client.inkskin.PreventSprintingClientPlayerEntityMixin",
+    "client.inkskin.RemoveFirstPersonFromNextPerspectiveMixin",
+    "client.inkskin.RenderLaunchBarInGameHudMixin",
+    "client.inkskin.ResetSneakInputOnDiveKeyboardInputMixin"
   ],
   "injectors": {
     "defaultRequire": 1
