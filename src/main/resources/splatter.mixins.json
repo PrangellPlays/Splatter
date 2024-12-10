@@ -17,6 +17,7 @@
     "client.inkskin.InkskinOverrideModelLivingEntityRendererMixin",
     "client.inkskin.NoArmorOnInkskinArmorFeatureRendererMixin",
     "client.inkskin.PreventSprintingClientPlayerEntityMixin",
+    "client.inkskin.RebindKeysForDiveClientPlayerEntityMixin",
     "client.inkskin.RemoveFirstPersonFromNextPerspectiveMixin",
     "client.inkskin.RenderLaunchBarInGameHudMixin",
     "client.inkskin.ResetSneakInputOnDiveKeyboardInputMixin"
