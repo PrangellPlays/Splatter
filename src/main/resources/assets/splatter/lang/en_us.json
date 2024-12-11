@@ -52,5 +52,6 @@
   "splatter.midnightconfig.inkSplatterSize": "Ink Splatter Size",
 
   "__Comment": "Entity Attributes",
-  "generic.splatter.step-height": "Step Height"
+  "generic.splatter.step-height": "Step Height",
+  "generic.splatter.inkskin-ink-speed-boost": "Inkskin ink speed boost"
 }
