@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "splatter:item/ink_totem/ink_totem_cyan"
+  }
+}

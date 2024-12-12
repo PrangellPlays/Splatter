@@ -1,6 +1,21 @@
 {
   "__Comment": "Items",
-
+  "item.splatter.ink_totem_black": "Totem of Black Ink",
+  "item.splatter.ink_totem_blue": "Totem of Blue Ink",
+  "item.splatter.ink_totem_brown": "Totem of Brown Ink",
+  "item.splatter.ink_totem_cyan": "Totem of Cyan Ink",
+  "item.splatter.ink_totem_gray": "Totem of Grey Ink",
+  "item.splatter.ink_totem_green": "Totem of Green Ink",
+  "item.splatter.ink_totem_light_blue": "Totem of Light Blue Ink",
+  "item.splatter.ink_totem_light_gray": "Totem of Light Grey Ink",
+  "item.splatter.ink_totem_lime": "Totem of Lime Ink",
+  "item.splatter.ink_totem_magenta": "Totem of Magenta Ink",
+  "item.splatter.ink_totem_orange": "Totem of Orange Ink",
+  "item.splatter.ink_totem_pink": "Totem of Pink Ink",
+  "item.splatter.ink_totem_purple": "Totem of Purple Ink",
+  "item.splatter.ink_totem_red": "Totem of Red Ink",
+  "item.splatter.ink_totem_white": "Totem of White Ink",
+  "item.splatter.ink_totem_yellow": "Totem of Yellow Ink",
 
   "__Comment": "Blocks",
   "block.splatter.black_ink": "Black Ink",
@@ -48,9 +63,8 @@
   "__Comment": "Config",
   "splatter.midnightconfig.title": "Splatter",
   "splatter.midnightconfig.category.client": "Client",
-  "splatter.midnightconfig.category.common": "Common",
   "splatter.midnightconfig.inkParticles": "Ink Particles",
-  "splatter.midnightconfig.inkSplatterSize": "Ink Splatter Size",
+  "splatter.midnightconfig.category.common": "Common",
 
   "__Comment": "Entity Attributes",
   "generic.splatter.step-height": "Step Height",

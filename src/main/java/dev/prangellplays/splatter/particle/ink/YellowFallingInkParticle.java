@@ -28,12 +28,13 @@ public class YellowFallingInkParticle extends SpriteBillboardParticle {
         super.tick();
         if (!this.dead && (this.onGround || this.isInFluid())) {
             this.markDead();
-            this.world.addParticle(SplatterParticles.YELLOW_INK_SPLAT, (double)((float)this.x), (double)((float)this.y + 0.01F), (double)((float)this.z), 0.0, 0.0, 0.0);
+            this.world.addParticle(SplatterParticles.YELLOW_INK_SPLAT, this.x, this.y + (double)(this.random.nextFloat() * 0.005F), this.z, 0.0, 0.0, 0.0);
         }
+
     }
 
     protected boolean isInFluid() {
-        BlockPos pos = new BlockPos((int) this.x, (int) this.y, (int) this.z);
+        BlockPos pos = BlockPos.ofFloored(this.x, this.y, this.z);
         FluidState fluidState = this.world.getFluidState(pos);
         if (fluidState.isEmpty()) {
             return false;
@@ -46,7 +47,6 @@ public class YellowFallingInkParticle extends SpriteBillboardParticle {
         return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
     }
 
-    @Environment(EnvType.CLIENT)
     public static class Factory implements ParticleFactory<DefaultParticleType> {
         private final SpriteProvider spriteProvider;
 

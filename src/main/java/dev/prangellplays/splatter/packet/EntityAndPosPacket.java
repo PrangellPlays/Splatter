@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 public class EntityAndPosPacket implements Packet<ClientPlayPacketListener> {
     public static final Identifier DIVE_SPLASH_ID = Splatter.id("inkling_dive_splash");
     public static final Identifier DIVE_INKSPLOSION_ID = Splatter.id("inkling_dive_inksplosion");
-    public static final Identifier REMOVE_INKMORPHOSIS_ID = Splatter.id("remove_inkmorphosis");
+    public static final Identifier REMOVE_INKSKIN_ID = Splatter.id("remove_inkskin");
     private final int id;
     private final double x;
     private final double y;

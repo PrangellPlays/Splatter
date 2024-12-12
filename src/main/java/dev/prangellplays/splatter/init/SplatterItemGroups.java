@@ -10,7 +10,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class SplatterItemGroups {
-    public static final ItemGroup EVENT_GROUP = Registry.register(Registries.ITEM_GROUP,
+    public static final ItemGroup ITEM_GROUP = Registry.register(Registries.ITEM_GROUP,
             new Identifier(Splatter.MOD_ID, "splatter_items"),
             FabricItemGroup.builder().displayName(Text.translatable("itemgroup.splatter.splatter_items")).icon(() -> new ItemStack(SplatterBlocks.BLACK_INK)).entries((displayContext, entries) -> {
                 entries.add(SplatterBlocks.BLACK_INK);
@@ -29,6 +29,7 @@ public class SplatterItemGroups {
                 entries.add(SplatterBlocks.RED_INK);
                 entries.add(SplatterBlocks.WHITE_INK);
                 entries.add(SplatterBlocks.YELLOW_INK);
+                entries.add(SplatterItems.INK_TOTEM_BLACK);
             }).build());
 
     public static void init() {

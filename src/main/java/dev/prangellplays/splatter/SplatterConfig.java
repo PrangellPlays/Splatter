@@ -10,6 +10,5 @@ public class SplatterConfig extends MidnightConfig {
     public static boolean inkParticles = true;
 
     //Common
-    @Entry(category = common, min=2,max=10)
-    public static int inkSplatterSize = 5;
+
 }

@@ -1,6 +1,8 @@
 package dev.prangellplays.splatter.init;
 
 import dev.prangellplays.splatter.Splatter;
+import dev.prangellplays.splatter.item.inktotem.InkTotemBlackItem;
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -11,6 +13,7 @@ import java.util.Map;
 
 public class SplatterItems {
     protected static final Map<Item, Identifier> ITEMS = new LinkedHashMap();
+    public static final Item INK_TOTEM_BLACK;
 
     public SplatterItems() {
     }
@@ -27,6 +30,6 @@ public class SplatterItems {
     }
 
     static {
-
+        INK_TOTEM_BLACK = create("ink_totem_black", (Item) (new InkTotemBlackItem(new FabricItemSettings().maxCount(1))));
     }
 }

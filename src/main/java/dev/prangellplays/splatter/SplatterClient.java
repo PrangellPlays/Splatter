@@ -1,13 +1,22 @@
 package dev.prangellplays.splatter;
 
+import dev.prangellplays.splatter.components.inkling.*;
+import dev.prangellplays.splatter.components.octoling.*;
 import dev.prangellplays.splatter.init.SplatterBlocks;
+import dev.prangellplays.splatter.init.SplatterComponents;
 import dev.prangellplays.splatter.init.SplatterParticles;
+import dev.prangellplays.splatter.packet.EntityAndPosPacket;
 import dev.prangellplays.splatter.particle.ink.*;
 import ladysnake.satin.api.managed.ShaderEffectManager;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.entity.Entity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.math.Vec3d;
 
 public class SplatterClient implements ClientModInitializer {
     public static final float MAX_LAUNCH_STRENGTH = 2.0F;
@@ -79,6 +88,566 @@ public class SplatterClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(SplatterBlocks.RED_INK, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(SplatterBlocks.WHITE_INK, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(SplatterBlocks.YELLOW_INK, RenderLayer.getCutout());
+
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.DIVE_INKSPLOSION_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    if (entity != null) {
+                        PlayerBlackOctolingComponent component = (PlayerBlackOctolingComponent) SplatterComponents.BLACK_OCTOLING.get(entity);
+                        component.setDiving(component.isOctoling());
+                        entity.calculateDimensions();
+                        client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                        for(int i = 0; i < 500; ++i) {
+                            client.world.addParticle(SplatterParticles.BLACK_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F));
+                        }
+                    }
+                });
+            }
+        });
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.REMOVE_INKSKIN_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    PlayerBlackOctolingComponent component = (PlayerBlackOctolingComponent) SplatterComponents.BLACK_OCTOLING.get(entity);
+                    component.setDiving(false);
+                    entity.calculateDimensions();
+                    client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                    for(int i = 0; i < 500; ++i) {
+                        client.world.addParticle(SplatterParticles.BLACK_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F));
+                    }
+                });
+            }
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.DIVE_INKSPLOSION_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    if (entity != null) {
+                        PlayerBlueInklingComponent component = (PlayerBlueInklingComponent) SplatterComponents.BLUE_INKLING.get(entity);
+                        component.setDiving(component.isInkling());
+                        entity.calculateDimensions();
+                        client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                        for(int i = 0; i < 500; ++i) {
+                            client.world.addParticle(SplatterParticles.BLUE_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F));
+                        }
+                    }
+                });
+            }
+        });
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.REMOVE_INKSKIN_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    PlayerBlueInklingComponent component = (PlayerBlueInklingComponent) SplatterComponents.BLUE_INKLING.get(entity);
+                    component.setDiving(false);
+                    entity.calculateDimensions();
+                    client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                    for(int i = 0; i < 500; ++i) {
+                        client.world.addParticle(SplatterParticles.BLUE_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F));
+                    }
+                });
+            }
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.DIVE_INKSPLOSION_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    if (entity != null) {
+                        PlayerBrownOctolingComponent component = (PlayerBrownOctolingComponent) SplatterComponents.BROWN_OCTOLING.get(entity);
+                        component.setDiving(component.isOctoling());
+                        entity.calculateDimensions();
+                        client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                        for(int i = 0; i < 500; ++i) {
+                            client.world.addParticle(SplatterParticles.BROWN_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F));
+                        }
+                    }
+                });
+            }
+        });
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.REMOVE_INKSKIN_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    PlayerBrownOctolingComponent component = (PlayerBrownOctolingComponent) SplatterComponents.BROWN_OCTOLING.get(entity);
+                    component.setDiving(false);
+                    entity.calculateDimensions();
+                    client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                    for(int i = 0; i < 500; ++i) {
+                        client.world.addParticle(SplatterParticles.BROWN_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F));
+                    }
+                });
+            }
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.DIVE_INKSPLOSION_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    if (entity != null) {
+                        PlayerCyanInklingComponent component = (PlayerCyanInklingComponent) SplatterComponents.CYAN_INKLING.get(entity);
+                        component.setDiving(component.isInkling());
+                        entity.calculateDimensions();
+                        client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                        for(int i = 0; i < 500; ++i) {
+                            client.world.addParticle(SplatterParticles.CYAN_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F));
+                        }
+                    }
+                });
+            }
+        });
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.REMOVE_INKSKIN_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    PlayerCyanInklingComponent component = (PlayerCyanInklingComponent) SplatterComponents.CYAN_INKLING.get(entity);
+                    component.setDiving(false);
+                    entity.calculateDimensions();
+                    client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                    for(int i = 0; i < 500; ++i) {
+                        client.world.addParticle(SplatterParticles.CYAN_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F));
+                    }
+                });
+            }
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.DIVE_INKSPLOSION_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    if (entity != null) {
+                        PlayerGrayOctolingComponent component = (PlayerGrayOctolingComponent) SplatterComponents.GRAY_OCTOLING.get(entity);
+                        component.setDiving(component.isOctoling());
+                        entity.calculateDimensions();
+                        client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                        for(int i = 0; i < 500; ++i) {
+                            client.world.addParticle(SplatterParticles.GRAY_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F));
+                        }
+                    }
+                });
+            }
+        });
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.REMOVE_INKSKIN_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    PlayerGrayOctolingComponent component = (PlayerGrayOctolingComponent) SplatterComponents.GRAY_OCTOLING.get(entity);
+                    component.setDiving(false);
+                    entity.calculateDimensions();
+                    client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                    for(int i = 0; i < 500; ++i) {
+                        client.world.addParticle(SplatterParticles.GRAY_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F));
+                    }
+                });
+            }
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.DIVE_INKSPLOSION_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    if (entity != null) {
+                        PlayerGreenInklingComponent component = (PlayerGreenInklingComponent) SplatterComponents.GREEN_INKLING.get(entity);
+                        component.setDiving(component.isInkling());
+                        entity.calculateDimensions();
+                        client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                        for(int i = 0; i < 500; ++i) {
+                            client.world.addParticle(SplatterParticles.GREEN_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F));
+                        }
+                    }
+                });
+            }
+        });
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.REMOVE_INKSKIN_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    PlayerGreenInklingComponent component = (PlayerGreenInklingComponent) SplatterComponents.GREEN_INKLING.get(entity);
+                    component.setDiving(false);
+                    entity.calculateDimensions();
+                    client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                    for(int i = 0; i < 500; ++i) {
+                        client.world.addParticle(SplatterParticles.GREEN_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F));
+                    }
+                });
+            }
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.DIVE_INKSPLOSION_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    if (entity != null) {
+                        PlayerLightBlueOctolingComponent component = (PlayerLightBlueOctolingComponent) SplatterComponents.LIGHT_BLUE_OCTOLING.get(entity);
+                        component.setDiving(component.isOctoling());
+                        entity.calculateDimensions();
+                        client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                        for(int i = 0; i < 500; ++i) {
+                            client.world.addParticle(SplatterParticles.LIGHT_BLUE_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F));
+                        }
+                    }
+                });
+            }
+        });
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.REMOVE_INKSKIN_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    PlayerLightBlueOctolingComponent component = (PlayerLightBlueOctolingComponent) SplatterComponents.LIGHT_BLUE_OCTOLING.get(entity);
+                    component.setDiving(false);
+                    entity.calculateDimensions();
+                    client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                    for(int i = 0; i < 500; ++i) {
+                        client.world.addParticle(SplatterParticles.LIGHT_BLUE_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F));
+                    }
+                });
+            }
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.DIVE_INKSPLOSION_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    if (entity != null) {
+                        PlayerLightGrayOctolingComponent component = (PlayerLightGrayOctolingComponent) SplatterComponents.LIGHT_GRAY_OCTOLING.get(entity);
+                        component.setDiving(component.isOctoling());
+                        entity.calculateDimensions();
+                        client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                        for(int i = 0; i < 500; ++i) {
+                            client.world.addParticle(SplatterParticles.LIGHT_GRAY_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F));
+                        }
+                    }
+                });
+            }
+        });
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.REMOVE_INKSKIN_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    PlayerLightGrayOctolingComponent component = (PlayerLightGrayOctolingComponent) SplatterComponents.LIGHT_GRAY_OCTOLING.get(entity);
+                    component.setDiving(false);
+                    entity.calculateDimensions();
+                    client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                    for(int i = 0; i < 500; ++i) {
+                        client.world.addParticle(SplatterParticles.LIGHT_GRAY_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F));
+                    }
+                });
+            }
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.DIVE_INKSPLOSION_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    if (entity != null) {
+                        PlayerLimeInklingComponent component = (PlayerLimeInklingComponent) SplatterComponents.LIME_INKLING.get(entity);
+                        component.setDiving(component.isInkling());
+                        entity.calculateDimensions();
+                        client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                        for(int i = 0; i < 500; ++i) {
+                            client.world.addParticle(SplatterParticles.LIME_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F));
+                        }
+                    }
+                });
+            }
+        });
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.REMOVE_INKSKIN_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    PlayerLimeInklingComponent component = (PlayerLimeInklingComponent) SplatterComponents.LIME_INKLING.get(entity);
+                    component.setDiving(false);
+                    entity.calculateDimensions();
+                    client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                    for(int i = 0; i < 500; ++i) {
+                        client.world.addParticle(SplatterParticles.LIME_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F));
+                    }
+                });
+            }
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.DIVE_INKSPLOSION_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    if (entity != null) {
+                        PlayerMagentaOctolingComponent component = (PlayerMagentaOctolingComponent) SplatterComponents.MAGENTA_OCTOLING.get(entity);
+                        component.setDiving(component.isOctoling());
+                        entity.calculateDimensions();
+                        client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                        for(int i = 0; i < 500; ++i) {
+                            client.world.addParticle(SplatterParticles.MAGENTA_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F));
+                        }
+                    }
+                });
+            }
+        });
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.REMOVE_INKSKIN_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    PlayerMagentaOctolingComponent component = (PlayerMagentaOctolingComponent) SplatterComponents.MAGENTA_OCTOLING.get(entity);
+                    component.setDiving(false);
+                    entity.calculateDimensions();
+                    client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                    for(int i = 0; i < 500; ++i) {
+                        client.world.addParticle(SplatterParticles.MAGENTA_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F));
+                    }
+                });
+            }
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.DIVE_INKSPLOSION_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    if (entity != null) {
+                        PlayerOrangeInklingComponent component = (PlayerOrangeInklingComponent) SplatterComponents.ORANGE_INKLING.get(entity);
+                        component.setDiving(component.isInkling());
+                        entity.calculateDimensions();
+                        client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                        for(int i = 0; i < 500; ++i) {
+                            client.world.addParticle(SplatterParticles.ORANGE_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F));
+                        }
+                    }
+                });
+            }
+        });
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.REMOVE_INKSKIN_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    PlayerOrangeInklingComponent component = (PlayerOrangeInklingComponent) SplatterComponents.ORANGE_INKLING.get(entity);
+                    component.setDiving(false);
+                    entity.calculateDimensions();
+                    client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                    for(int i = 0; i < 500; ++i) {
+                        client.world.addParticle(SplatterParticles.ORANGE_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F));
+                    }
+                });
+            }
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.DIVE_INKSPLOSION_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    if (entity != null) {
+                        PlayerPinkInklingComponent component = (PlayerPinkInklingComponent) SplatterComponents.PINK_INKLING.get(entity);
+                        component.setDiving(component.isInkling());
+                        entity.calculateDimensions();
+                        client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                        for(int i = 0; i < 500; ++i) {
+                            client.world.addParticle(SplatterParticles.PINK_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F));
+                        }
+                    }
+                });
+            }
+        });
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.REMOVE_INKSKIN_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    PlayerPinkInklingComponent component = (PlayerPinkInklingComponent) SplatterComponents.PINK_INKLING.get(entity);
+                    component.setDiving(false);
+                    entity.calculateDimensions();
+                    client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                    for(int i = 0; i < 500; ++i) {
+                        client.world.addParticle(SplatterParticles.PINK_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F));
+                    }
+                });
+            }
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.DIVE_INKSPLOSION_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    if (entity != null) {
+                        PlayerPurpleInklingComponent component = (PlayerPurpleInklingComponent) SplatterComponents.PURPLE_INKLING.get(entity);
+                        component.setDiving(component.isInkling());
+                        entity.calculateDimensions();
+                        client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                        for(int i = 0; i < 500; ++i) {
+                            client.world.addParticle(SplatterParticles.PURPLE_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F));
+                        }
+                    }
+                });
+            }
+        });
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.REMOVE_INKSKIN_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    PlayerPurpleInklingComponent component = (PlayerPurpleInklingComponent) SplatterComponents.PURPLE_INKLING.get(entity);
+                    component.setDiving(false);
+                    entity.calculateDimensions();
+                    client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                    for(int i = 0; i < 500; ++i) {
+                        client.world.addParticle(SplatterParticles.PURPLE_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F));
+                    }
+                });
+            }
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.DIVE_INKSPLOSION_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    if (entity != null) {
+                        PlayerRedOctolingComponent component = (PlayerRedOctolingComponent) SplatterComponents.RED_OCTOLING.get(entity);
+                        component.setDiving(component.isOctoling());
+                        entity.calculateDimensions();
+                        client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                        for(int i = 0; i < 500; ++i) {
+                            client.world.addParticle(SplatterParticles.RED_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F));
+                        }
+                    }
+                });
+            }
+        });
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.REMOVE_INKSKIN_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    PlayerRedOctolingComponent component = (PlayerRedOctolingComponent) SplatterComponents.RED_OCTOLING.get(entity);
+                    component.setDiving(false);
+                    entity.calculateDimensions();
+                    client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                    for(int i = 0; i < 500; ++i) {
+                        client.world.addParticle(SplatterParticles.RED_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F));
+                    }
+                });
+            }
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.DIVE_INKSPLOSION_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    if (entity != null) {
+                        PlayerWhiteOctolingComponent component = (PlayerWhiteOctolingComponent) SplatterComponents.WHITE_OCTOLING.get(entity);
+                        component.setDiving(component.isOctoling());
+                        entity.calculateDimensions();
+                        client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                        for(int i = 0; i < 500; ++i) {
+                            client.world.addParticle(SplatterParticles.WHITE_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F));
+                        }
+                    }
+                });
+            }
+        });
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.REMOVE_INKSKIN_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    PlayerWhiteOctolingComponent component = (PlayerWhiteOctolingComponent) SplatterComponents.WHITE_OCTOLING.get(entity);
+                    component.setDiving(false);
+                    entity.calculateDimensions();
+                    client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                    for(int i = 0; i < 500; ++i) {
+                        client.world.addParticle(SplatterParticles.WHITE_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F));
+                    }
+                });
+            }
+        });
+
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.DIVE_INKSPLOSION_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    if (entity != null) {
+                        PlayerYellowInklingComponent component = (PlayerYellowInklingComponent) SplatterComponents.YELLOW_INKLING.get(entity);
+                        component.setDiving(component.isInkling());
+                        entity.calculateDimensions();
+                        client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                        for(int i = 0; i < 500; ++i) {
+                            client.world.addParticle(SplatterParticles.YELLOW_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F), (double)((client.world.random.nextFloat() - 0.5F) * 0.6F));
+                        }
+                    }
+                });
+            }
+        });
+        ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.REMOVE_INKSKIN_ID, (client, handler, buf, responseSender) -> {
+            EntityAndPosPacket packet = new EntityAndPosPacket(buf);
+            Entity entity = packet.getEntity(client.world);
+            Vec3d entityPos = packet.getPos();
+            if (entity != null) {
+                client.execute(() -> {
+                    PlayerYellowInklingComponent component = (PlayerYellowInklingComponent) SplatterComponents.YELLOW_INKLING.get(entity);
+                    component.setDiving(false);
+                    entity.calculateDimensions();
+                    client.world.playSound(entityPos.getX(), entityPos.getY(), entityPos.getZ(), SoundEvents.ENTITY_PLAYER_SPLASH, SoundCategory.PLAYERS, 1.0F, (float)(1.0 + entity.getWorld().getRandom().nextGaussian() / 20.0), false);
+                    for(int i = 0; i < 500; ++i) {
+                        client.world.addParticle(SplatterParticles.YELLOW_FALLING_INK, entityPos.getX() + (double)client.world.random.nextFloat() - 0.5, entityPos.getY() + (double)(client.world.random.nextFloat() * 1.8F), entityPos.getZ() + (double)client.world.random.nextFloat() - 0.5, (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F), (double)((client.world.random.nextFloat() - 0.5F) * 0.2F));
+                    }
+                });
+            }
+        });
     }
 
     static {

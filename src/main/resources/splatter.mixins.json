@@ -3,7 +3,17 @@
   "package": "dev.prangellplays.splatter.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "server.TooFastServerPlayNetworkHandlerMixin",
     "server.inkskin.AdjustDivingInkskinEyeHeightEntityMixin",
+    "server.inkskin.DisableMobTargetingInkskinDiversMobEntityMixin",
+    "server.inkskin.EntityMixin",
+    "server.inkskin.InkskinDivePlayerEntityMixin",
+    "server.inkskin.InkskinLivingEntityMixin",
+    "server.inkskin.InkskinOnInkVelocityMultiplierEntityMixin",
+    "server.inkskin.InkskinPlayStepSoundInkOnWaterEntityMixin",
+    "server.inkskin.RemoveBlockFallSoundLivingEntityMixin",
+    "server.inkskin.RemoveCollisionWithDiversItemEntityMixin",
+    "server.inkskin.ServerPlayNetworkHandlerMixin",
     "server.stepheight.EntityAttributesMixin",
     "server.stepheight.EntityMixin",
     "server.stepheight.LivingEntityMixin"
@@ -12,8 +22,6 @@
     "defaultRequire": 1
   },
   "client": [
-    "client.inkskin.PreventSprintingClientPlayerEntityMixin",
-    "client.inkskin.ResetSneakInputOnDiveKeyboardInputMixin",
     "client.inkskin.BipedEntityModelAccessor",
     "client.inkskin.DisableCapeFeatureRendererMixin",
     "client.inkskin.DivingInkskinDisableBlockOutlineWorldRendererMixin",
@@ -22,8 +30,10 @@
     "client.inkskin.InkskinForceThirdPersonGameOptionsMixin",
     "client.inkskin.InkskinOverrideModelLivingEntityRendererMixin",
     "client.inkskin.NoArmorOnInkskinArmorFeatureRendererMixin",
+    "client.inkskin.PreventSprintingClientPlayerEntityMixin",
     "client.inkskin.RebindKeysForDiveClientPlayerEntityMixin",
     "client.inkskin.RemoveFirstPersonFromNextPerspectiveMixin",
-    "client.inkskin.RenderLaunchBarInGameHudMixin"
+    "client.inkskin.RenderLaunchBarInGameHudMixin",
+    "client.inkskin.ResetSneakInputOnDiveKeyboardInputMixin"
   ]
 }

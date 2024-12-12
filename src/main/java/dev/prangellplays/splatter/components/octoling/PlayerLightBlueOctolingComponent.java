@@ -4,6 +4,7 @@ import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import dev.prangellplays.splatter.Splatter;
 import dev.prangellplays.splatter.SplatterConfig;
+import dev.prangellplays.splatter.command.SplatterCommand;
 import dev.prangellplays.splatter.init.SplatterComponents;
 import dev.prangellplays.splatter.init.SplatterParticles;
 import dev.prangellplays.splatter.init.SplatterStatusEffects;
@@ -12,6 +13,8 @@ import dev.prangellplays.splatter.attribute.StepHeightEntityAttribute;
 import dev.prangellplays.splatter.world.LightBlueInksplosion;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.block.ShapeContext;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,6 +25,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,27 +33,20 @@ import java.util.Iterator;
 import java.util.UUID;
 
 public class PlayerLightBlueOctolingComponent implements AutoSyncedComponent, CommonTickingComponent {
-    public static final Identifier OCTOLING_TEXTURE = Splatter.id("textures/entity/octoling/light_blue_octoling_base.png");
+    public static final Identifier INKSKIN_TEXTURE = Splatter.id("textures/entity/inkskin/light_blue_octoling_base.png");
     private static final EntityAttributeModifier STEP_HEIGHT_MODIFIER;
     public static final int MAX_LAUNCH_TICKS = 100;
     private final PlayerEntity player;
-    private Type octolingType;
     private boolean diving;
     private int divingTicks;
     private int outOfInkTimer;
-    private int lastDiveX;
-    private int lastDiveY;
-    private int lastDiveZ;
-    private int launchTicks;
-    private boolean octoling;
+    private int lastDiveX = 0;
+    private int lastDiveY = 0;
+    private int lastDiveZ = 0;
+    private int launchTicks = 0;
+    private boolean octoling = false;
 
     public PlayerLightBlueOctolingComponent(PlayerEntity player) {
-        this.octolingType = Type.DEFAULT;
-        this.lastDiveX = 0;
-        this.lastDiveY = 0;
-        this.lastDiveZ = 0;
-        this.launchTicks = 0;
-        this.octoling = false;
         this.player = player;
     }
 
@@ -70,33 +67,15 @@ public class PlayerLightBlueOctolingComponent implements AutoSyncedComponent, Co
 
     }
 
-    public Type getOctolingType() {
-        if (this.octolingType == null || this.player.getGameProfile() != null) {
-            Type[] var1 = Type.values();
-            int var2 = var1.length;
-
-            for(int var3 = 0; var3 < var2; ++var3) {
-                Type octolingType = var1[var3];
-                if (octolingType.uuid != null && octolingType.uuid.equals(this.player.getUuid())) {
-                    this.setOctolingType(octolingType);
-                    return this.octolingType;
-                }
-            }
-        }
-
-        return this.octolingType != null ? this.octolingType : Type.DEFAULT;
-    }
-
-    public void setOctolingType(Type octolingType) {
-        this.octolingType = octolingType;
-        this.sync();
-    }
-
     public boolean isDiving() {
         return this.isOctoling() && this.diving;
     }
 
     public void setDiving(boolean diving) {
+        if (diving) {
+            this.player.setPos(this.player.getX(), (double)Math.round(this.player.getY()) + 0.1, this.player.getZ());
+        }
+
         this.setOutOfInkTimer(0);
         this.diving = diving;
         this.player.calculateDimensions();
@@ -173,6 +152,7 @@ public class PlayerLightBlueOctolingComponent implements AutoSyncedComponent, Co
     public void rise() {
         this.setDiving(false);
         this.setDivingTicks(this.getDivingTicksAnimationLength());
+        this.player.setPose(EntityPose.CROUCHING);
     }
 
     public void launch() {
@@ -208,18 +188,16 @@ public class PlayerLightBlueOctolingComponent implements AutoSyncedComponent, Co
     public void clientTick() {
         this.tick();
         if (this.isOctoling()) {
-            boolean collidingWithFuneralInk = Splatter.isCollidingWithLightBlueInk(this.player);
-            boolean collidingWithFuneralStrict = Splatter.isCollidingWithLightBlueInkStrict(this.player);
-            if (SplatterConfig.inkParticles) {
-                if (this.isDiving()) {
-                    if (!collidingWithFuneralInk && this.player.isOnGround()) {
-                        this.player.getWorld().addParticle(SplatterParticles.LIGHT_BLUE_INK_SPLAT, (double) ((float) this.player.getX()), (double) ((float) this.player.getY() + 0.01F), (double) ((float) this.player.getZ()), 0.0, 0.0, 0.0);
-                    }
-                } else if (!collidingWithFuneralStrict && !this.player.isTouchingWater() && this.player.isOnGround()) {
-                    this.player.getWorld().addParticle(SplatterParticles.LIGHT_BLUE_FALLING_INK, this.player.getParticleX(0.3), this.player.getY() + 0.009999999776482582, this.player.getParticleZ(0.3), 0.0, 0.0, 0.0);
+            boolean collidingWithLightBlueInk = Splatter.isCollidingWithLightBlueInk(this.player);
+            if (this.isDiving()) {
+                if (!collidingWithLightBlueInk && this.player.isOnGround()) {
+                    this.player.getWorld().addParticle(SplatterParticles.LIGHT_BLUE_INK_SPLAT, this.player.getParticleX(0.3), this.player.getY() + 0.009999999776482582, this.player.getParticleZ(0.3), (double)((this.player.getWorld().random.nextFloat() - 0.5F) * 0.3F), (double)(this.player.getWorld().random.nextFloat() * 0.3F), (double)((this.player.getWorld().random.nextFloat() - 0.5F) * 0.3F));
                 }
+            } else if (!collidingWithLightBlueInk && !this.player.isTouchingWater() && this.player.isOnGround()) {
+                this.player.getWorld().addParticle(SplatterParticles.LIGHT_BLUE_FALLING_INK, this.player.getParticleX(0.3), this.player.getY() + 0.009999999776482582, this.player.getParticleZ(0.3), 0.0, 0.0, 0.0);
             }
         }
+
     }
 
     public void serverTick() {
@@ -229,9 +207,13 @@ public class PlayerLightBlueOctolingComponent implements AutoSyncedComponent, Co
             this.player.getHungerManager().setFoodLevel(20);
             if (this.isDiving()) {
                 this.player.setFireTicks(0);
+                if ((double)(this.player.getSteppingPos().getY() + 1) > this.player.getY() && this.player.getBlockStateAtPos().getCameraCollisionShape(this.player.getWorld(), this.player.getBlockPos(), ShapeContext.of(this.player)).equals(VoxelShapes.fullCube())) {
+                    this.player.teleport(this.player.getX(), this.player.getY() + 0.10000000149011612, this.player.getZ());
+                }
+
                 this.player.getHungerManager().setSaturationLevel(20.0F);
                 if (this.isMovingWhileDiving()) {
-                    LightBlueInksplosion inksplosion = new LightBlueInksplosion(this.player.getWorld(), this.player, this.player.getX(), this.player.getY(), this.player.getZ(), 1.0F);
+                    LightBlueInksplosion inksplosion = new LightBlueInksplosion(this.player.getWorld(), this.player, this.player.getX(), this.player.getY(), this.player.getZ(), SplatterCommand.getInkSpreadPower());
                     inksplosion.tick();
                     this.lastDiveX = this.player.getBlockX();
                     this.lastDiveY = this.player.getBlockY();
@@ -269,7 +251,7 @@ public class PlayerLightBlueOctolingComponent implements AutoSyncedComponent, Co
                     Packet<ClientPlayPacketListener> packet = new EntityAndPosPacket(this.player);
                     PacketByteBuf buf = PacketByteBufs.create();
                     packet.write(buf);
-                    ServerPlayNetworking.send(serverPlayerEntity, EntityAndPosPacket.REMOVE_INKMORPHOSIS_ID, buf);
+                    ServerPlayNetworking.send(serverPlayerEntity, EntityAndPosPacket.REMOVE_INKSKIN_ID, buf);
                 }
             }
         }
@@ -277,38 +259,6 @@ public class PlayerLightBlueOctolingComponent implements AutoSyncedComponent, Co
     }
 
     static {
-        STEP_HEIGHT_MODIFIER = new EntityAttributeModifier(UUID.fromString("3f1829ef-bd95-4e03-83a2-f568ba3286bd"), "Octoling step height", 3.0, EntityAttributeModifier.Operation.ADDITION);
-    }
-
-    public enum Type {
-        DEFAULT("default", false, (String)null, "textures/entity/octoling/light_blue_octoling_crown_base");
-
-        public final String name;
-        public final @Nullable UUID uuid;
-        public final Identifier crownTexture;
-        public final Identifier emissiveCrownTexture;
-        public final boolean slim;
-
-        private Type(@Nullable String name, boolean slim, String uuid, String crownTexture) {
-            this.name = name;
-            this.slim = slim;
-            this.uuid = uuid != null ? UUID.fromString(uuid) : null;
-            this.crownTexture = Splatter.id(crownTexture + ".png");
-            this.emissiveCrownTexture = Splatter.id(crownTexture + "_emissive.png");
-        }
-
-        public static @Nullable Type fromString(String name) {
-            Type[] var1 = values();
-            int var2 = var1.length;
-
-            for(int var3 = 0; var3 < var2; ++var3) {
-                Type type = var1[var3];
-                if (type.name.equals(name)) {
-                    return type;
-                }
-            }
-
-            return null;
-        }
+        STEP_HEIGHT_MODIFIER = new EntityAttributeModifier(UUID.fromString("3f1829ef-bd95-4e03-83a2-f568ba3286bd"), "Inkskin step height", 3.0, EntityAttributeModifier.Operation.ADDITION);
     }
 }
