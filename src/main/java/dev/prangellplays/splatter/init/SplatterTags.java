@@ -8,6 +8,7 @@ import net.minecraft.registry.tag.TagKey;
 
 public class SplatterTags {
     public static final TagKey<Block> INK_REPLACEABLE_PLANTS = createBlock("ink_replaceable_plants");
+    public static final TagKey<Block> INK = createBlock("ink");
 
     public SplatterTags() {
     }

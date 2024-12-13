@@ -213,8 +213,8 @@ public class PlayerBlackOctolingComponent implements AutoSyncedComponent, Common
 
                 this.player.getHungerManager().setSaturationLevel(20.0F);
                 if (this.isMovingWhileDiving()) {
-                    BlackInksplosion inksplosion = new BlackInksplosion(this.player.getWorld(), this.player, this.player.getX(), this.player.getY(), this.player.getZ(), SplatterCommand.getInkSpreadPower());
-                    inksplosion.tick();
+                    //BlackInksplosion inksplosion = new BlackInksplosion(this.player.getWorld(), this.player, this.player.getX(), this.player.getY(), this.player.getZ(), SplatterCommand.getInkSpreadPower());
+                    //inksplosion.tick();
                     this.lastDiveX = this.player.getBlockX();
                     this.lastDiveY = this.player.getBlockY();
                     this.lastDiveZ = this.player.getBlockZ();

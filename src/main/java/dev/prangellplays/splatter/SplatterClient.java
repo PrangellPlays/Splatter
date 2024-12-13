@@ -1,9 +1,11 @@
 package dev.prangellplays.splatter;
 
+import dev.prangellplays.splatter.client.InvisibleThrownEntityRenderer;
 import dev.prangellplays.splatter.components.inkling.*;
 import dev.prangellplays.splatter.components.octoling.*;
 import dev.prangellplays.splatter.init.SplatterBlocks;
 import dev.prangellplays.splatter.init.SplatterComponents;
+import dev.prangellplays.splatter.init.SplatterEntities;
 import dev.prangellplays.splatter.init.SplatterParticles;
 import dev.prangellplays.splatter.packet.EntityAndPosPacket;
 import dev.prangellplays.splatter.particle.ink.*;
@@ -12,6 +14,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.sound.SoundCategory;
@@ -88,6 +91,8 @@ public class SplatterClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(SplatterBlocks.RED_INK, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(SplatterBlocks.WHITE_INK, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(SplatterBlocks.YELLOW_INK, RenderLayer.getCutout());
+
+        EntityRendererRegistry.register(SplatterEntities.SPLATTERSHOT_BLACK_INK, InvisibleThrownEntityRenderer::new);
 
         ClientPlayNetworking.registerGlobalReceiver(EntityAndPosPacket.DIVE_INKSPLOSION_ID, (client, handler, buf, responseSender) -> {
             EntityAndPosPacket packet = new EntityAndPosPacket(buf);

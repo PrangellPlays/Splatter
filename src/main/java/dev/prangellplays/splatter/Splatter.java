@@ -241,6 +241,7 @@ public class Splatter implements ModInitializer {
 		SplatterItemGroups.init();
 		SplatterStatusEffects.init();
 		SplatterParticles.init();
+		SplatterEntities.init();
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			SplatterCommand.register(dispatcher);
 		});

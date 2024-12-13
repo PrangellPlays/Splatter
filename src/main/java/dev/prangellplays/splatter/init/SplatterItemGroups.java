@@ -30,6 +30,21 @@ public class SplatterItemGroups {
                 entries.add(SplatterBlocks.WHITE_INK);
                 entries.add(SplatterBlocks.YELLOW_INK);
                 entries.add(SplatterItems.INK_TOTEM_BLACK);
+                entries.add(SplatterItems.INK_TOTEM_BLUE);
+                entries.add(SplatterItems.INK_TOTEM_BROWN);
+                entries.add(SplatterItems.INK_TOTEM_CYAN);
+                entries.add(SplatterItems.INK_TOTEM_GRAY);
+                entries.add(SplatterItems.INK_TOTEM_GREEN);
+                entries.add(SplatterItems.INK_TOTEM_LIGHT_BLUE);
+                entries.add(SplatterItems.INK_TOTEM_LIGHT_GRAY);
+                entries.add(SplatterItems.INK_TOTEM_LIME);
+                entries.add(SplatterItems.INK_TOTEM_MAGENTA);
+                entries.add(SplatterItems.INK_TOTEM_ORANGE);
+                entries.add(SplatterItems.INK_TOTEM_PINK);
+                entries.add(SplatterItems.INK_TOTEM_PURPLE);
+                entries.add(SplatterItems.INK_TOTEM_RED);
+                entries.add(SplatterItems.INK_TOTEM_WHITE);
+                entries.add(SplatterItems.INK_TOTEM_YELLOW);
             }).build());
 
     public static void init() {
