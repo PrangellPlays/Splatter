@@ -1,4 +1,4 @@
-package dev.prangellplays.splatter.client;
+package dev.prangellplays.splatter.client.renderer;
 
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;

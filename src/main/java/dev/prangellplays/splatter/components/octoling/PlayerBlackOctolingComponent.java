@@ -45,9 +45,11 @@ public class PlayerBlackOctolingComponent implements AutoSyncedComponent, Common
     private int lastDiveZ = 0;
     private int launchTicks = 0;
     private boolean octoling = false;
+    private int ink;
 
     public PlayerBlackOctolingComponent(PlayerEntity player) {
         this.player = player;
+        this.ink = 24000;
     }
 
     private void sync() {
@@ -256,6 +258,14 @@ public class PlayerBlackOctolingComponent implements AutoSyncedComponent, Common
             }
         }
 
+    }
+
+    public int getInk() {
+        return this.ink;
+    }
+
+    public int getInkBarLength(int width) {
+        return (int)((float)this.getInk() / 24000.0F * (float)width);
     }
 
     static {

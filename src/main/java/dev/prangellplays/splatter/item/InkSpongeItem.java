@@ -1,12 +1,16 @@
 package dev.prangellplays.splatter.item;
 
 import dev.prangellplays.splatter.init.SplatterTags;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.data.TrackedData;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 import java.util.List;
@@ -35,5 +39,10 @@ public class InkSpongeItem extends Item {
             }
         }
         return super.useOnBlock(context);
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        tooltip.add(Text.translatable("item.splatter.ink_sponge.desc").formatted(Formatting.DARK_PURPLE));
     }
 }

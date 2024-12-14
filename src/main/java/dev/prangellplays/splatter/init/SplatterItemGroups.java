@@ -13,6 +13,7 @@ public class SplatterItemGroups {
     public static final ItemGroup ITEM_GROUP = Registry.register(Registries.ITEM_GROUP,
             new Identifier(Splatter.MOD_ID, "splatter_items"),
             FabricItemGroup.builder().displayName(Text.translatable("itemgroup.splatter.splatter_items")).icon(() -> new ItemStack(SplatterBlocks.BLACK_INK)).entries((displayContext, entries) -> {
+                //Ink
                 entries.add(SplatterBlocks.BLACK_INK);
                 entries.add(SplatterBlocks.BLUE_INK);
                 entries.add(SplatterBlocks.BROWN_INK);
@@ -29,6 +30,8 @@ public class SplatterItemGroups {
                 entries.add(SplatterBlocks.RED_INK);
                 entries.add(SplatterBlocks.WHITE_INK);
                 entries.add(SplatterBlocks.YELLOW_INK);
+
+                //Ink Totems
                 entries.add(SplatterItems.INK_TOTEM_BLACK);
                 entries.add(SplatterItems.INK_TOTEM_BLUE);
                 entries.add(SplatterItems.INK_TOTEM_BROWN);
@@ -45,6 +48,27 @@ public class SplatterItemGroups {
                 entries.add(SplatterItems.INK_TOTEM_RED);
                 entries.add(SplatterItems.INK_TOTEM_WHITE);
                 entries.add(SplatterItems.INK_TOTEM_YELLOW);
+
+                //Splattershot
+                entries.add(SplatterItems.SPLATTERSHOT_BLACK);
+                //entries.add(SplatterItems.SPLATTERSHOT_BLUE);
+                //entries.add(SplatterItems.SPLATTERSHOT_BROWN);
+                //entries.add(SplatterItems.SPLATTERSHOT_CYAN);
+                //entries.add(SplatterItems.SPLATTERSHOT_GRAY);
+                //entries.add(SplatterItems.SPLATTERSHOT_GREEN);
+                //entries.add(SplatterItems.SPLATTERSHOT_LIGHT_BLUE);
+                //entries.add(SplatterItems.SPLATTERSHOT_LIGHT_GRAY);
+                //entries.add(SplatterItems.SPLATTERSHOT_LIME);
+                //entries.add(SplatterItems.SPLATTERSHOT_MAGENTA);
+                //entries.add(SplatterItems.SPLATTERSHOT_ORANGE);
+                //entries.add(SplatterItems.SPLATTERSHOT_PINK);
+                //entries.add(SplatterItems.SPLATTERSHOT_PURPLE);
+                //entries.add(SplatterItems.SPLATTERSHOT_RED);
+                //entries.add(SplatterItems.SPLATTERSHOT_WHITE);
+                //entries.add(SplatterItems.SPLATTERSHOT_YELLOW);
+
+                //Ink Sponge
+                entries.add(SplatterItems.INK_SPONGE);
             }).build());
 
     public static void init() {

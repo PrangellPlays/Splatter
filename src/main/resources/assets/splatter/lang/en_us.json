@@ -20,6 +20,7 @@
   "item.splatter.splattershot_black": "Splattershot (Black)",
 
   "item.splatter.ink_sponge": "Ink Sponge",
+  "item.splatter.ink_sponge.desc": "Clears all of the mess you create with ink",
 
   "__Comment": "Blocks",
   "block.splatter.black_ink": "Black Ink",
